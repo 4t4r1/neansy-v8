@@ -4,7 +4,7 @@ import sst from "astro-sst";
 
 // https://astro.build/config
 export default defineConfig({
+    site: "https://www.neansy.com",
     output: "server",
     adapter: sst(),
-    // site: "https://neansy.com",
 });
