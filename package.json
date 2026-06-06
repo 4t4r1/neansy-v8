@@ -8,6 +8,7 @@
   "scripts": {
     "astro": "astro",
     "build": "astro build",
+    "deploy": "export AWS_PROFILE=atari\naws sso login --profile atari\nnpx sst deploy --stage production",
     "dev": "astro dev",
     "preview": "astro preview"
   },
