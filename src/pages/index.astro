@@ -1,11 +1,74 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Welcome from "../components/Welcome.astro";
+import Particles from "../components/Particles.astro";
+import Layout from "../layouts/Layout.astro";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  main {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+  }
+
+  section {
+    height: 100vh;
+    scroll-snap-align: start;
+  }
+
+  section .container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  #particles {
+    position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+    z-index: -1;
+  }
+</style>
+
 <Layout>
-	<Welcome />
+  <main>
+	<Particles />
+    <section id="welcome">
+      <div class="container">
+        <Welcome />
+      </div>
+    </section>
+    <section id="services">
+      <div class="container">
+        <h1>Services</h1>
+      </div>
+    </section>
+    <section id="projects">
+      <div class="container">
+        <h1>Projects</h1>
+      </div>
+    </section>
+    <section id="people">
+      <div class="container">
+        <h1>People</h1>
+	  </div>
+    </section>
+    <section id="contact">
+      <div class="container">
+        <h1>Contact</h1>
+	  </div>
+    </section>
+  </main>
 </Layout>

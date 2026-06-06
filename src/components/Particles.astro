@@ -1,0 +1,21 @@
+<script>
+  import { tsParticles } from "@tsparticles/engine";
+  import { loadSlim } from "@tsparticles/slim";
+  import tsconfig from "../assets/tsparticles.json";
+
+  const initParticles = async () => {
+    await loadSlim(tsParticles);
+    await tsParticles.load({
+      id: "particles",
+      options: tsconfig,
+    });
+  };
+
+  try {
+    await Promise.all([initParticles()]);
+  } catch (error) {
+    console.warn("Client initialisation failed", error);
+  }
+</script>
+
+<div id="particles"></div>

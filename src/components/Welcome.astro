@@ -1,80 +1,48 @@
 <script>
-	import { tsParticles } from '@tsparticles/engine';
-	import { loadSlim } from '@tsparticles/slim';
-	import GlitchedWriter from 'glitched-writer';
+  import GlitchedWriter from "glitched-writer";
 
-	const initParticles = async () => {
-		await loadSlim(tsParticles);
-        await tsParticles.load({
-            id: "particles",
-            url: "./tsparticles.json"
-        });	
-	};
+  const initGlitchedWriter = async () => {
+    const GWParams = "encrypted";
 
-	const initGlitchedWriter = async () => {
-		const GWParams = 'encrypted';
+    await Promise.all([
+      new GlitchedWriter("#ural", GWParams).write("ural"),
+      new GlitchedWriter("#cillary", GWParams).write("cillary"),
+      new GlitchedWriter("#stems", GWParams).write("stems"),
+    ]);
+  };
 
-		await Promise.all([
-			new GlitchedWriter('#ural', GWParams).write('ural'),
-			new GlitchedWriter('#cillary', GWParams).write('cillary'),
-			new GlitchedWriter('#stems', GWParams).write('stems'),
-		]);
-	};
-
-	try {
-		await Promise.all([
-			initParticles(),
-			initGlitchedWriter(),
-		]);
-	} catch (error) {
-		console.warn('Client initialisation failed', error);
-	}
+  try {
+    await Promise.all([initGlitchedWriter()]);
+  } catch (error) {
+    console.warn("Client initialisation failed", error);
+  }
 </script>
 
 <style>
-	body {
-		color: white;
-		background-color: black;
-		margin: 0;
-	}
+  body {
+    color: white;
+    background-color: black;
+    margin: 0;
+  }
 
-	#particles {
-		min-height: 100vh;
-	}
+  .logo {
+    color: gray;
+    display: block;
+    font-family: "Major Mono Display", monospace;
+    font-size: 3rem;
+    line-height: 1;
+    text-decoration: none;
+    z-index: 2;
+  }
 
-	.hero {
-		align-items: center;
-		display: flex;
-		justify-content: center;
-		min-height: 100vh;
-		padding-left: 15px;
-		padding-right: 15px;
-	}
-
-	.logo {
-		color: gray;
-		display: block;
-		font-family: 'Major Mono Display', monospace;
-		font-size: 3rem;
-		line-height: 1;
-		text-decoration: none;
-		z-index: 2;
-	}
-
-	.logo em {
-		color: white;
-		font-style: normal;
-	}
+  .logo em {
+    color: white;
+    font-style: normal;
+  }
 </style>
 
-<div id="container">
-	<main id="particles">
-		<section class="hero">
-			<div class="logo">
-				<div><em>NE</em><span id="ural"></span></div>
-				<div><em>AN</em><span id="cillary"></span></div>
-				<div><em>SY</em><span id="stems"></span></div>
-			</div>
-		</section>
-	</main>
+<div class="logo">
+	<div><em>NE</em><span id="ural"></span></div>
+	<div><em>AN</em><span id="cillary"></span></div>
+	<div><em>SY</em><span id="stems"></span></div>
 </div>
