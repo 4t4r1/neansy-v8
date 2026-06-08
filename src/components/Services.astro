@@ -1,0 +1,38 @@
+---
+const services = [
+	{
+		title: 'Platform modernisation',
+		body: 'Stabilise legacy systems, untangle fragile architecture, and create a practical route toward cleaner, more maintainable platforms.',
+	},
+	{
+		title: 'Technical leadership',
+		body: 'Support teams with delivery structure, engineering standards, documentation, mentoring, and clearer decision-making.',
+	},
+	{
+		title: 'AI-assisted engineering',
+		body: 'Introduce pragmatic AI workflows that improve delivery speed without sacrificing review quality, maintainability, or trust.',
+	},
+	{
+		title: 'Cloud & delivery',
+		body: 'Design and improve AWS infrastructure, deployment pipelines, automation, and operational foundations.',
+	},
+];
+---
+
+<div class="section-content">
+	<header class="section-header">
+		<p class="section-eyebrow">Services</p>
+		<h2 class="section-title">Engineering support for complex, changing systems.</h2>
+		<p class="section-lead">We help teams modernise platforms, improve delivery, and bring order to difficult technical environments. The work sits between hands-on engineering, architecture, technical leadership, and pragmatic AI-assisted delivery.</p>
+	</header>
+	<div class="section-grid">
+		{
+			services.map((service) => (
+				<article class="section-card">
+					<h3>{service.title}</h3>
+					<p>{service.body}</p>
+				</article>
+			))
+		}
+	</div>
+</div>
