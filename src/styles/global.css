@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+@import './section.css';
+
+@layer base {
+	body {
+		@apply flex h-screen flex-col bg-black text-xl text-white;
+		font-family: Roboto, sans-serif;
+	}
+
+	main {
+		@apply flex-auto;
+	}
+}
