@@ -13,11 +13,13 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.0",
     "@tsparticles/engine": "^4.1.2",
     "@tsparticles/slim": "^4.1.2",
     "astro": "^5.18.2",
     "astro-sst": "^3.1.4",
     "glitched-writer": "^2.0.29",
-    "sst": "4.15.2"
+    "sst": "4.15.2",
+    "tailwindcss": "^4.3.0"
   }
 }
