@@ -1,0 +1,205 @@
+<nav class="site-navigation" data-navigation aria-label="Primary navigation">
+	<ul class="menu" data-navigation-menu>
+		<li><a href="#welcome">Home</a></li>
+		<li><a href="#services">Services</a></li>
+		<li><a href="#projects">Projects</a></li>
+		<li><a href="#people">People</a></li>
+		<li><a href="#contact">Contact</a></li>
+		<li class="follow-highlight" data-navigation-highlight aria-hidden="true"></li>
+	</ul>
+</nav>
+
+<script>
+	const navigation = document.querySelector<HTMLElement>('[data-navigation]');
+	const menu = navigation?.querySelector<HTMLElement>('[data-navigation-menu]');
+	const highlight = navigation?.querySelector<HTMLElement>(
+		'[data-navigation-highlight]',
+	);
+	const links = Array.from(
+		navigation?.querySelectorAll<HTMLAnchorElement>('a[href^="#"]') ?? [],
+	);
+	const main = document.querySelector<HTMLElement>('main');
+	const sections = links
+		.map((link) => document.querySelector<HTMLElement>(link.hash))
+		.filter((section): section is HTMLElement => Boolean(section));
+
+	let activeLink = links[0];
+
+	const moveHighlight = (link: HTMLAnchorElement) => {
+		if (!menu || !highlight) return;
+		const item = link.parentElement;
+		if (!item) return;
+
+		highlight.style.width = `${item.offsetWidth}px`;
+		highlight.style.height = `${item.offsetHeight}px`;
+		highlight.style.transform = `translate(${item.offsetLeft}px, ${item.offsetTop}px)`;
+		highlight.dataset.visible = 'true';
+	};
+
+	const setActiveLink = (link: HTMLAnchorElement) => {
+		activeLink?.removeAttribute('aria-current');
+		activeLink = link;
+		activeLink.setAttribute('aria-current', 'page');
+		moveHighlight(activeLink);
+	};
+
+	const updateActiveSection = () => {
+		if (!main) return;
+		const scrollerBounds = main.getBoundingClientRect();
+		const activeSection = sections.reduce<HTMLElement | undefined>(
+			(mostVisible, section) => {
+				const bounds = section.getBoundingClientRect();
+				const visibleHeight = Math.max(
+					0,
+					Math.min(bounds.bottom, scrollerBounds.bottom) -
+						Math.max(bounds.top, scrollerBounds.top),
+				);
+				const mostVisibleHeight = mostVisible
+					? Math.max(
+							0,
+							Math.min(
+								mostVisible.getBoundingClientRect().bottom,
+								scrollerBounds.bottom,
+							) -
+								Math.max(
+									mostVisible.getBoundingClientRect().top,
+									scrollerBounds.top,
+								),
+						)
+					: -1;
+
+				return visibleHeight > mostVisibleHeight ? section : mostVisible;
+			},
+			undefined,
+		);
+		const link = activeSection
+			? links.find((item) => item.hash === `#${activeSection.id}`)
+			: undefined;
+
+		if (link && link !== activeLink) setActiveLink(link);
+	};
+
+	const observer = main
+		? new IntersectionObserver(
+				() => updateActiveSection(),
+				{
+					root: main,
+					threshold: [0, 0.25, 0.5, 0.75, 1],
+				},
+			)
+		: undefined;
+
+	sections.forEach((section) => observer?.observe(section));
+
+	const updateOnScroll = () => {
+		window.cancelAnimationFrame(scrollFrame);
+		scrollFrame = window.requestAnimationFrame(updateActiveSection);
+	};
+
+	links.forEach((link) => {
+		link.addEventListener('mouseenter', () => moveHighlight(link));
+		link.addEventListener('focus', () => moveHighlight(link));
+		link.addEventListener('click', () => setActiveLink(link));
+	});
+
+	menu?.addEventListener('mouseleave', () => moveHighlight(activeLink));
+	menu?.addEventListener('focusout', (event) => {
+		if (!menu.contains(event.relatedTarget as Node | null)) {
+			moveHighlight(activeLink);
+		}
+	});
+
+	let scrollFrame: number;
+	main?.addEventListener('scroll', updateOnScroll, { passive: true });
+
+	window.addEventListener('resize', () => {
+		updateActiveSection();
+		moveHighlight(activeLink);
+	});
+	setActiveLink(activeLink);
+	updateActiveSection();
+</script>
+
+<style>
+	.site-navigation {
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+
+	.menu {
+		position: relative;
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		list-style: none;
+		font-size: 0.875rem;
+	}
+
+	.menu li {
+		position: relative;
+		z-index: 1;
+		cursor: pointer;
+	}
+
+	.menu a {
+		display: block;
+		padding: 1rem 0.5rem;
+		color: rgb(255 255 255 / 0.72);
+		text-decoration: none;
+		transition: color 180ms ease;
+	}
+
+	.menu a:hover,
+	.menu a:focus-visible,
+	.menu a[aria-current='page'] {
+		color: white;
+	}
+
+	.menu a:focus-visible {
+		outline: none;
+	}
+
+	.menu .follow-highlight {
+		position: absolute;
+		z-index: 0;
+		top: 0;
+		left: 0;
+		border: 1px solid rgb(255 255 255 / 0.2);
+		border-radius: 0.6rem;
+		background: rgb(255 255 255 / 0.1);
+		box-shadow: 0 0.5rem 2rem rgb(0 0 0 / 0.24);
+		opacity: 0;
+		pointer-events: none;
+		transition:
+			width 220ms ease,
+			height 220ms ease,
+			transform 220ms ease,
+			opacity 160ms ease;
+	}
+
+	.menu .follow-highlight[data-visible='true'] {
+		opacity: 1;
+	}
+
+	@media (min-width: 40rem) {
+		.menu {
+			width: max-content;
+			justify-content: flex-start;
+			font-size: 1.25rem;
+		}
+
+		.menu a {
+			padding-right: 1.5rem;
+			padding-left: 1.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.follow-highlight {
+			transition: opacity 160ms ease;
+		}
+	}
+</style>
