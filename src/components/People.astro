@@ -1,0 +1,201 @@
+---
+import profileImage from '../assets/andrew-profile.png';
+
+const capabilities = [
+	'Technical strategy',
+	'Platform architecture',
+	'Delivery leadership',
+	'AI-assisted engineering',
+];
+---
+
+<div class="people section-content">
+	<header class="section-header people-header">
+		<p class="section-eyebrow">People</p>
+		<h2 class="section-title">
+			Technical leadership, architecture, and hands-on delivery.
+		</h2>
+		<p class="section-lead">
+			NeAnSy is led by Andrew Gerber, helping teams modernise
+			platforms, stabilise complex systems, and improve engineering delivery.
+		</p>
+	</header>
+
+	<article class="profile-card">
+		<div class="portrait">
+			<img src={profileImage.src} alt="Andrew Gerber" />
+			<div class="portrait-label">
+				<span>Founder</span>
+				<span>London, UK</span>
+			</div>
+		</div>
+
+		<div class="profile-content">
+			<p class="role">Fractional CTO / Technical Lead</p>
+			<h3>Andrew Gerber</h3>
+
+			<div class="biography">
+				<p>
+					I work with companies that need experienced technical support
+					across legacy modernisation, cloud architecture, delivery processes,
+					and AI-assisted engineering workflows.
+				</p>
+				<p>
+					My work sits between strategic technical direction and hands-on
+					implementation: helping teams make better decisions, ship more
+					reliably, and reduce the drag caused by unclear systems.
+				</p>
+			</div>
+
+			<ul class="capabilities" aria-label="Areas of expertise">
+				{
+					capabilities.map((capability) => (
+						<li>{capability}</li>
+					))
+				}
+			</ul>
+		</div>
+	</article>
+</div>
+
+<style>
+	.people {
+		position: relative;
+		z-index: 2;
+	}
+
+	.people-header {
+		margin-bottom: 2rem;
+	}
+
+	.profile-card {
+		--accent: 92 231 255;
+		display: grid;
+		grid-template-columns: minmax(17rem, 0.8fr) minmax(0, 1.2fr);
+		max-width: 68rem;
+		margin: 0 auto;
+		overflow: hidden;
+		border: 1px solid rgb(255 255 255 / 0.28);
+		border-radius: 1rem;
+		background:
+			linear-gradient(145deg, rgb(var(--accent) / 0.1), transparent 44%),
+			rgb(0 0 0 / 0.68);
+		backdrop-filter: blur(12px);
+	}
+
+	.portrait {
+		position: relative;
+		min-height: 23rem;
+		overflow: hidden;
+		border-right: 1px solid rgb(255 255 255 / 0.22);
+	}
+
+	.portrait::after {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgb(0 0 0 / 0.78), transparent 45%);
+		content: '';
+	}
+
+	.portrait img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 34%;
+	}
+
+	.portrait-label {
+		position: absolute;
+		z-index: 1;
+		right: 1.25rem;
+		bottom: 1.25rem;
+		left: 1.25rem;
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		color: rgb(var(--accent));
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.profile-content {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding: 2rem;
+	}
+
+	.role {
+		margin-bottom: 0.75rem;
+		color: rgb(var(--accent));
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.profile-content h3 {
+		margin-bottom: 1.25rem;
+		font-size: clamp(2rem, 3.4vw, 3.5rem);
+		font-weight: 700;
+		letter-spacing: -0.05em;
+		line-height: 0.95;
+	}
+
+	.biography {
+		display: grid;
+		gap: 0.75rem;
+		max-width: 37rem;
+		color: rgb(255 255 255 / 0.8);
+		font-size: 0.95rem;
+		line-height: 1.55;
+	}
+
+	.capabilities {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-top: 1.5rem;
+		list-style: none;
+	}
+
+	.capabilities li {
+		border: 1px solid rgb(var(--accent) / 0.35);
+		border-radius: 999px;
+		background: rgb(var(--accent) / 0.06);
+		padding: 0.45rem 0.7rem;
+		color: rgb(255 255 255 / 0.85);
+		font-size: 0.7rem;
+		letter-spacing: 0.04em;
+	}
+
+	@media (max-width: 48rem) {
+		.people {
+			padding-top: 5rem;
+			padding-bottom: 5rem;
+		}
+
+		.people-header {
+			text-align: left;
+		}
+
+		.profile-card {
+			grid-template-columns: 1fr;
+		}
+
+		.portrait {
+			min-height: auto;
+			aspect-ratio: 4 / 3;
+			border-right: 0;
+			border-bottom: 1px solid rgb(255 255 255 / 0.22);
+		}
+
+		.profile-content {
+			padding: 1.5rem;
+		}
+	}
+</style>
