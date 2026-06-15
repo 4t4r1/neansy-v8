@@ -1,0 +1,441 @@
+---
+import { projects } from '../data/projects';
+---
+
+<div class="projects section-content">
+	<header class="section-header projects-header">
+		<p class="section-eyebrow">Selected projects</p>
+		<h2 class="section-title">Building the systems behind ambitious businesses.</h2>
+		<p class="section-lead">
+			A selection of companies and platforms shaped through technical leadership,
+			architecture, and hands-on engineering.
+		</p>
+	</header>
+
+	<div class="project-controls">
+		<p class="project-count" aria-live="polite">
+			<span data-current-project>01</span>
+			<span aria-hidden="true"> / </span>
+			<span>{String(projects.length).padStart(2, '0')}</span>
+		</p>
+
+		<div class="project-buttons">
+			<button type="button" data-project-previous aria-label="Previous project">
+				<span aria-hidden="true">&larr;</span>
+			</button>
+			<button type="button" data-project-next aria-label="Next project">
+				<span aria-hidden="true">&rarr;</span>
+			</button>
+		</div>
+	</div>
+
+	<div
+		class="project-track"
+		data-project-track
+		tabindex="0"
+		aria-label="Selected projects"
+	>
+		{
+			projects.map((project, index) => (
+				<a
+					class={`project-card project-card--${project.accent}`}
+					href={`/project/${project.slug}`}
+					data-project-slide
+					data-project-index={index}
+					aria-label={`Read the ${project.name} project overview`}
+				>
+					<div class="project-visual">
+						<img
+							src={project.image.src}
+							alt={`${project.name} project artwork`}
+							loading={index === 0 ? 'eager' : 'lazy'}
+						/>
+					</div>
+
+					<div class="project-content">
+						<div class="project-meta">
+							<span>{project.number}</span>
+							<span>{project.sector}</span>
+						</div>
+
+						<h3>{project.name}</h3>
+						<p class="project-summary">{project.summary}</p>
+
+						<div class="project-work">
+							<p class="project-label">The work</p>
+							<p>{project.work}</p>
+						</div>
+
+						<p class="project-link">
+							View project <span aria-hidden="true">&nearr;</span>
+						</p>
+					</div>
+				</a>
+			))
+		}
+	</div>
+</div>
+
+<script>
+	const projects = document.querySelector('.projects');
+	const track = projects?.querySelector<HTMLElement>('[data-project-track]');
+	const slides = Array.from(
+		projects?.querySelectorAll<HTMLElement>('[data-project-slide]') ?? [],
+	);
+	const previous = projects?.querySelector<HTMLButtonElement>(
+		'[data-project-previous]',
+	);
+	const next = projects?.querySelector<HTMLButtonElement>('[data-project-next]');
+	const current = projects?.querySelector<HTMLElement>('[data-current-project]');
+
+	let activeIndex = 0;
+
+	const showProject = (index: number) => {
+		slides[index]?.scrollIntoView({
+			behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+				? 'auto'
+				: 'smooth',
+			block: 'nearest',
+			inline: 'start',
+		});
+	};
+
+	const setActiveProject = (index: number) => {
+		activeIndex = index;
+		if (current) current.textContent = String(index + 1).padStart(2, '0');
+		if (previous) previous.disabled = index === 0;
+		if (next) next.disabled = index === slides.length - 1;
+	};
+
+	previous?.addEventListener('click', () => showProject(activeIndex - 1));
+	next?.addEventListener('click', () => showProject(activeIndex + 1));
+
+	track?.addEventListener('keydown', (event) => {
+		if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+		event.preventDefault();
+		const direction = event.key === 'ArrowRight' ? 1 : -1;
+		showProject(Math.max(0, Math.min(slides.length - 1, activeIndex + direction)));
+	});
+
+	const updateActiveProject = () => {
+		if (!track) return;
+		const trackCenter = track.getBoundingClientRect().left + track.clientWidth / 2;
+		const closestSlide = slides.reduce((closest, slide) => {
+			const slideCenter =
+				slide.getBoundingClientRect().left + slide.clientWidth / 2;
+			const closestCenter =
+				closest.getBoundingClientRect().left + closest.clientWidth / 2;
+			return Math.abs(slideCenter - trackCenter) <
+				Math.abs(closestCenter - trackCenter)
+				? slide
+				: closest;
+		});
+
+		setActiveProject(Number(closestSlide.dataset.projectIndex));
+	};
+
+	let scrollFrame: number;
+	track?.addEventListener('scroll', () => {
+		window.cancelAnimationFrame(scrollFrame);
+		scrollFrame = window.requestAnimationFrame(updateActiveProject);
+	});
+
+	setActiveProject(0);
+</script>
+
+<style>
+	.projects {
+		position: relative;
+		z-index: 2;
+	}
+
+	.projects-header {
+		margin-bottom: 2rem;
+	}
+
+	.project-controls {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 0.75rem;
+	}
+
+	.project-count {
+		color: rgb(255 255 255 / 0.6);
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+	}
+
+	.project-buttons {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	.project-buttons button {
+		display: grid;
+		width: 2.5rem;
+		height: 2.5rem;
+		place-items: center;
+		border: 1px solid rgb(255 255 255 / 0.28);
+		border-radius: 999px;
+		background: rgb(0 0 0 / 0.55);
+		color: white;
+		cursor: pointer;
+		transition:
+			border-color 180ms ease,
+			background-color 180ms ease,
+			opacity 180ms ease;
+	}
+
+	.project-buttons button:hover:not(:disabled),
+	.project-buttons button:focus-visible {
+		border-color: rgb(255 255 255 / 0.75);
+		background: rgb(255 255 255 / 0.1);
+	}
+
+	.project-buttons button:disabled {
+		opacity: 0.3;
+		cursor: default;
+	}
+
+	.project-track {
+		display: flex;
+		gap: 1rem;
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-behavior: smooth;
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+	}
+
+	.project-track::-webkit-scrollbar {
+		display: none;
+	}
+
+	.project-track:focus-visible {
+		outline: 1px solid rgb(255 255 255 / 0.6);
+		outline-offset: 0.5rem;
+	}
+
+	.project-card {
+		--accent: 255 255 255;
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(20rem, 0.82fr) minmax(0, 1.18fr);
+		flex: 0 0 100%;
+		min-height: 20rem;
+		overflow: hidden;
+		border: 1px solid rgb(255 255 255 / 0.28);
+		border-radius: 1rem;
+		background:
+			linear-gradient(145deg, rgb(var(--accent) / 0.12), transparent 42%),
+			rgb(0 0 0 / 0.68);
+		backdrop-filter: blur(12px);
+		scroll-snap-align: start;
+		scroll-snap-stop: always;
+		transition:
+			border-color 180ms ease,
+			transform 180ms ease;
+		color: white;
+		text-decoration: none;
+	}
+
+	.project-card::after {
+		position: absolute;
+		right: -4rem;
+		bottom: -5rem;
+		width: 10rem;
+		height: 10rem;
+		border: 1px solid rgb(var(--accent) / 0.45);
+		border-radius: 50%;
+		content: '';
+		box-shadow:
+			0 0 0 2rem rgb(var(--accent) / 0.04),
+			0 0 0 4rem rgb(var(--accent) / 0.025);
+	}
+
+	.project-card:hover {
+		transform: translateY(-0.3rem);
+		border-color: rgb(var(--accent) / 0.8);
+	}
+
+	.project-visual {
+		position: relative;
+		z-index: 1;
+		min-height: 20rem;
+		overflow: hidden;
+		border-right: 1px solid rgb(255 255 255 / 0.2);
+		background: rgb(0 0 0 / 0.45);
+	}
+
+	.project-visual::after {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			135deg,
+			transparent 45%,
+			rgb(var(--accent) / 0.08)
+		);
+		content: '';
+		pointer-events: none;
+	}
+
+	.project-visual img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 500ms ease;
+	}
+
+	.project-card:hover .project-visual img {
+		transform: scale(1.025);
+	}
+
+	.project-content {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		min-width: 0;
+		flex-direction: column;
+		padding: 1.75rem;
+	}
+
+	.project-card--lime {
+		--accent: 192 255 102;
+	}
+
+	.project-card--violet {
+		--accent: 190 145 255;
+	}
+
+	.project-card--cyan {
+		--accent: 92 231 255;
+	}
+
+	.project-meta {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		color: rgb(var(--accent));
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.project-card h3 {
+		margin: 1.5rem 0 0.75rem;
+		font-size: clamp(2rem, 3.4vw, 3.5rem);
+		font-weight: 700;
+		letter-spacing: -0.05em;
+		line-height: 0.95;
+	}
+
+	.project-summary {
+		max-width: 28rem;
+		color: rgb(255 255 255 / 0.76);
+		font-size: 0.95rem;
+		line-height: 1.55;
+	}
+
+	.project-work {
+		position: relative;
+		z-index: 1;
+		margin-top: auto;
+		padding-top: 1.25rem;
+	}
+
+	.project-link {
+		margin-top: 1rem;
+		color: rgb(var(--accent));
+		font-size: 0.72rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.project-link span {
+		display: inline-block;
+		margin-left: 0.25rem;
+		transition: transform 180ms ease;
+	}
+
+	.project-card:hover .project-link span,
+	.project-card:focus-visible .project-link span {
+		transform: translate(0.2rem, -0.2rem);
+	}
+
+	.project-card:focus-visible {
+		outline: 1px solid rgb(var(--accent));
+		outline-offset: -0.3rem;
+	}
+
+	.project-work p:last-child {
+		color: rgb(255 255 255 / 0.9);
+		font-size: 0.85rem;
+		line-height: 1.55;
+	}
+
+	.project-label {
+		margin-bottom: 0.45rem;
+		color: rgb(var(--accent));
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	@media (max-width: 64rem) {
+		.project-card {
+			grid-template-columns: 1fr;
+			flex-basis: calc(100% - 4rem);
+			min-height: 20rem;
+		}
+
+		.project-visual {
+			min-height: auto;
+			aspect-ratio: 16 / 7;
+			border-right: 0;
+			border-bottom: 1px solid rgb(255 255 255 / 0.2);
+		}
+	}
+
+	@media (max-width: 48rem) {
+		.projects {
+			padding-top: 5rem;
+			padding-bottom: 5rem;
+		}
+
+		.projects-header {
+			margin-bottom: 2rem;
+			text-align: left;
+		}
+
+		.project-track {
+			margin-right: -1.5rem;
+			padding-right: 1.5rem;
+		}
+
+		.project-card {
+			flex-basis: calc(100% - 2rem);
+			min-height: 19rem;
+		}
+
+		.project-visual {
+			aspect-ratio: 16 / 9;
+		}
+
+		.project-content {
+			padding: 1.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.project-visual img {
+			transition: none;
+		}
+	}
+</style>
