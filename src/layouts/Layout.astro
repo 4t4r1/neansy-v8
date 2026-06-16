@@ -1,12 +1,111 @@
 ---
 import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	imageAlt?: string;
+	type?: 'website' | 'article';
+	noindex?: boolean;
+}
+
+const {
+	title = 'NeAnSy | Technical leadership and engineering delivery',
+	description = 'Technical leadership, architecture, and hands-on engineering delivery.',
+	image = '/social/neansy.png',
+	imageAlt = 'NeAnSy technical leadership and engineering delivery',
+	type = 'website',
+	noindex = false,
+} = Astro.props;
+
+const siteURL = Astro.site ?? Astro.url.origin;
+const canonicalURL = new URL(Astro.url.pathname, siteURL);
+const socialImageURL = new URL(image, siteURL);
+const organisationID = new URL('/#organisation', siteURL).href;
+const websiteID = new URL('/#website', siteURL).href;
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': organisationID,
+			name: 'NeAnSy',
+			legalName: 'Neural Ancillary Systems',
+			url: new URL('/', siteURL).href,
+			logo: new URL('/favicon.svg', siteURL).href,
+		},
+		{
+			'@type': 'WebSite',
+			'@id': websiteID,
+			url: new URL('/', siteURL).href,
+			name: 'NeAnSy',
+			description:
+				'Technical leadership, architecture, and hands-on engineering delivery.',
+			publisher: { '@id': organisationID },
+			inLanguage: 'en-GB',
+		},
+		{
+			'@type': 'WebPage',
+			'@id': `${canonicalURL.href}#webpage`,
+			url: canonicalURL.href,
+			name: title,
+			description,
+			isPartOf: { '@id': websiteID },
+			about: { '@id': organisationID },
+			primaryImageOfPage: {
+				'@type': 'ImageObject',
+				url: socialImageURL.href,
+				width: 1200,
+				height: 630,
+			},
+			inLanguage: 'en-GB',
+		},
+	],
+};
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en-GB" class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="description" content={description} />
+		<meta name="author" content="NeAnSy" />
+		<meta
+			name="robots"
+			content={noindex
+				? 'noindex, nofollow'
+				: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'}
+		/>
+		<meta name="referrer" content="strict-origin-when-cross-origin" />
+		<meta name="theme-color" content="#000000" />
+		<meta name="color-scheme" content="dark" />
+		<link rel="canonical" href={canonicalURL} />
+
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content={type} />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:site_name" content="NeAnSy" />
+		<meta property="og:locale" content="en_GB" />
+		<meta property="og:image" content={socialImageURL} />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={imageAlt} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={socialImageURL} />
+		<meta name="twitter:image:alt" content={imageAlt} />
+
+		<script
+			type="application/ld+json"
+			set:html={JSON.stringify(structuredData)}
+		/>
+
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
@@ -14,7 +113,7 @@ import '../styles/global.css';
 			href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Neuton&family=Roboto&display=swap"
 			rel="stylesheet"
 		/>
-		<title>Neural Ancillary Systems</title>
+		<title>{title}</title>
 	</head>
 	<body>
 		<slot />
