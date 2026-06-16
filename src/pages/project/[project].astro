@@ -1,0 +1,415 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Particles from '../../components/Particles.astro';
+import { getProject, projects } from '../../data/projects';
+
+const project = getProject(Astro.params.project);
+
+if (!project) {
+	return Astro.redirect('/404');
+}
+
+const currentIndex = projects.findIndex((item) => item.slug === project.slug);
+const nextProject = projects[(currentIndex + 1) % projects.length];
+---
+
+<Layout
+	title={`${project.name} project | NeAnSy`}
+	description={`${project.summary} ${project.work}`}
+	image={`/social/project-${project.slug}.png`}
+	imageAlt={`${project.name} project overview by NeAnSy`}
+	type="article"
+>
+	<Particles />
+
+	<header class="project-nav">
+		<a href="/" class="brand-link" aria-label="NeAnSy home">NeAnSy</a>
+		<a href="/#projects" class="back-link">
+			<span aria-hidden="true">&larr;</span> All projects
+		</a>
+	</header>
+
+	<main
+		class={`project-page project-page--${project.accent}`}
+		style={`--accent: ${project.accentRgb}`}
+	>
+		<section class="project-hero">
+			<div class="project-hero-copy">
+				<p class="project-eyebrow">{project.number} / {project.sector}</p>
+				<h1>{project.name}</h1>
+				<p class="project-deck">{project.summary}</p>
+			</div>
+
+			<div class="project-hero-image">
+				<img src={project.image.src} alt={`${project.name} project artwork`} />
+			</div>
+		</section>
+
+		<section class="project-overview page-grid">
+			<p class="section-marker">Overview</p>
+			<div class="overview-copy">
+				<p class="overview-lead">{project.introduction}</p>
+				<p>{project.work}</p>
+			</div>
+		</section>
+
+		<section class="project-story">
+			<div class="story-block">
+				<p class="section-marker">The challenge</p>
+				<div class="story-copy">
+					{project.challenge.map((paragraph) => <p>{paragraph}</p>)}
+				</div>
+			</div>
+
+			<div class="story-block">
+				<p class="section-marker">The approach</p>
+				<div class="story-copy">
+					{project.approach.map((paragraph) => <p>{paragraph}</p>)}
+				</div>
+			</div>
+		</section>
+
+		<section class="project-details page-grid">
+			<div>
+				<p class="section-marker">Engineering focus</p>
+				<h2>Where the work concentrated.</h2>
+			</div>
+
+			<ul class="focus-list">
+				{
+					project.focusAreas.map((area, index) => (
+						<li>
+							<span>{String(index + 1).padStart(2, '0')}</span>
+							{area}
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section class="project-value">
+			<div class="value-heading">
+				<p class="section-marker">Practical value</p>
+				<h2>Technical progress that supports the wider business.</h2>
+			</div>
+
+			<div class="value-grid">
+				{
+					project.value.map((item) => (
+						<article>
+							<span aria-hidden="true">&plus;</span>
+							<p>{item}</p>
+						</article>
+					))
+				}
+			</div>
+		</section>
+
+		<a class="next-project" href={`/project/${nextProject.slug}`}>
+			<span>
+				<span class="section-marker">Next project</span>
+				<strong>{nextProject.name}</strong>
+			</span>
+			<span class="next-arrow" aria-hidden="true">&rarr;</span>
+		</a>
+	</main>
+</Layout>
+
+<style>
+	.project-nav {
+		position: fixed;
+		z-index: 10;
+		top: 0;
+		right: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1.25rem 2rem;
+		background: linear-gradient(to bottom, rgb(0 0 0 / 0.85), transparent);
+	}
+
+	.project-nav a {
+		color: white;
+		text-decoration: none;
+	}
+
+	.brand-link {
+		font-family: 'Major Mono Display', monospace;
+		font-size: 1rem;
+	}
+
+	.back-link {
+		font-size: 0.8rem;
+		letter-spacing: 0.08em;
+	}
+
+	.project-page {
+		position: relative;
+		z-index: 2;
+		width: 100%;
+		max-width: 90rem;
+		margin: 0 auto;
+		padding: 7rem 2rem 3rem;
+	}
+
+	.project-hero {
+		display: grid;
+		grid-template-columns: minmax(0, 0.82fr) minmax(26rem, 1.18fr);
+		min-height: calc(100vh - 10rem);
+		align-items: center;
+		gap: 4rem;
+	}
+
+	.project-eyebrow,
+	.section-marker {
+		color: rgb(var(--accent));
+		font-size: 0.7rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	.project-hero h1 {
+		margin: 1.25rem 0 1.5rem;
+		font-size: clamp(4rem, 10vw, 9rem);
+		font-weight: 700;
+		letter-spacing: -0.07em;
+		line-height: 0.82;
+	}
+
+	.project-deck {
+		max-width: 35rem;
+		color: rgb(255 255 255 / 0.76);
+		font-size: clamp(1.15rem, 2vw, 1.5rem);
+		line-height: 1.5;
+	}
+
+	.project-hero-image {
+		position: relative;
+		overflow: hidden;
+		border: 1px solid rgb(var(--accent) / 0.4);
+		border-radius: 1rem;
+		background: rgb(0 0 0 / 0.65);
+		aspect-ratio: 1;
+		box-shadow: 0 2rem 7rem rgb(var(--accent) / 0.12);
+	}
+
+	.project-hero-image img {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.page-grid,
+	.story-block {
+		display: grid;
+		grid-template-columns: minmax(12rem, 0.45fr) minmax(0, 1.55fr);
+		gap: 3rem;
+	}
+
+	.project-overview {
+		padding: 8rem 0;
+		border-top: 1px solid rgb(255 255 255 / 0.2);
+	}
+
+	.overview-copy {
+		max-width: 52rem;
+	}
+
+	.overview-copy p {
+		color: rgb(255 255 255 / 0.72);
+		line-height: 1.7;
+	}
+
+	.overview-copy .overview-lead {
+		margin-bottom: 2rem;
+		color: white;
+		font-size: clamp(1.75rem, 4vw, 3.25rem);
+		font-weight: 600;
+		letter-spacing: -0.04em;
+		line-height: 1.08;
+	}
+
+	.project-story {
+		display: grid;
+		gap: 1rem;
+	}
+
+	.story-block {
+		border: 1px solid rgb(255 255 255 / 0.22);
+		border-radius: 1rem;
+		background:
+			linear-gradient(145deg, rgb(var(--accent) / 0.08), transparent 45%),
+			rgb(0 0 0 / 0.65);
+		padding: 2.5rem;
+		backdrop-filter: blur(12px);
+	}
+
+	.story-copy {
+		display: grid;
+		gap: 1.25rem;
+		max-width: 48rem;
+		color: rgb(255 255 255 / 0.78);
+		line-height: 1.7;
+	}
+
+	.project-details {
+		padding: 9rem 0;
+	}
+
+	.project-details h2,
+	.value-heading h2 {
+		max-width: 34rem;
+		margin-top: 1rem;
+		font-size: clamp(2.25rem, 5vw, 4.5rem);
+		font-weight: 700;
+		letter-spacing: -0.055em;
+		line-height: 0.98;
+	}
+
+	.focus-list {
+		list-style: none;
+		border-top: 1px solid rgb(255 255 255 / 0.22);
+	}
+
+	.focus-list li {
+		display: grid;
+		grid-template-columns: 3rem 1fr;
+		gap: 1rem;
+		border-bottom: 1px solid rgb(255 255 255 / 0.22);
+		padding: 1.2rem 0;
+		font-size: clamp(1rem, 2vw, 1.35rem);
+	}
+
+	.focus-list span {
+		color: rgb(var(--accent));
+		font-size: 0.7rem;
+		letter-spacing: 0.14em;
+	}
+
+	.project-value {
+		padding: 4rem;
+		border: 1px solid rgb(var(--accent) / 0.35);
+		border-radius: 1rem;
+		background:
+			linear-gradient(145deg, rgb(var(--accent) / 0.12), transparent 48%),
+			rgb(0 0 0 / 0.68);
+	}
+
+	.value-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+		margin-top: 4rem;
+	}
+
+	.value-grid article {
+		min-height: 12rem;
+		border-top: 1px solid rgb(255 255 255 / 0.28);
+		padding-top: 1.25rem;
+	}
+
+	.value-grid span {
+		color: rgb(var(--accent));
+	}
+
+	.value-grid p {
+		margin-top: 2rem;
+		color: rgb(255 255 255 / 0.82);
+		line-height: 1.55;
+	}
+
+	.next-project {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-top: 3rem;
+		border: 1px solid rgb(255 255 255 / 0.24);
+		border-radius: 1rem;
+		padding: 2rem;
+		color: white;
+		text-decoration: none;
+		transition:
+			border-color 180ms ease,
+			background-color 180ms ease;
+	}
+
+	.next-project:hover,
+	.next-project:focus-visible {
+		border-color: rgb(var(--accent) / 0.75);
+		background: rgb(var(--accent) / 0.06);
+	}
+
+	.next-project strong {
+		display: block;
+		margin-top: 0.4rem;
+		font-size: clamp(1.75rem, 4vw, 3rem);
+		letter-spacing: -0.04em;
+	}
+
+	.next-arrow {
+		color: rgb(var(--accent));
+		font-size: 2.5rem;
+	}
+
+	@media (max-width: 64rem) {
+		.project-hero {
+			grid-template-columns: 1fr;
+			min-height: auto;
+			padding: 5rem 0;
+		}
+
+		.project-hero-image {
+			aspect-ratio: 16 / 9;
+		}
+
+		.value-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.value-grid article {
+			min-height: auto;
+		}
+	}
+
+	@media (max-width: 48rem) {
+		.project-nav {
+			padding: 1rem;
+		}
+
+		.project-page {
+			padding: 5rem 1.25rem 2rem;
+		}
+
+		.project-hero {
+			gap: 2.5rem;
+		}
+
+		.project-hero h1 {
+			font-size: clamp(3.5rem, 20vw, 5.5rem);
+		}
+
+		.page-grid,
+		.story-block {
+			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+
+		.project-overview,
+		.project-details {
+			padding: 5rem 0;
+		}
+
+		.story-block,
+		.project-value {
+			padding: 1.5rem;
+		}
+
+		.value-grid {
+			margin-top: 2.5rem;
+		}
+	}
+</style>
