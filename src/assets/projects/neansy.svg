@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title description">
+  <title id="title">NeAnSy project artwork</title>
+  <desc id="description">Abstract neural system connecting architecture and delivery.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#102d33"/>
+      <stop offset="1" stop-color="#030607"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.2" cy="0.1" r="0.85">
+      <stop offset="0" stop-color="#5ce7ff" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#5ce7ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#background)"/>
+  <rect width="800" height="800" fill="url(#glow)"/>
+  <g fill="none" stroke="#5ce7ff" stroke-width="2">
+    <path d="M92 563L190 326l148 95 112-244 175 118 86 238-203 125-225-48z" opacity=".34"/>
+    <path d="M92 563l246-142 170 237M190 326l260-149 175 118M338 421l287-126M283 610l167-433M508 658l117-363 86 238" opacity=".18"/>
+  </g>
+  <g fill="#5ce7ff">
+    <circle cx="92" cy="563" r="13"/>
+    <circle cx="190" cy="326" r="18" opacity=".85"/>
+    <circle cx="338" cy="421" r="25"/>
+    <circle cx="450" cy="177" r="14" opacity=".65"/>
+    <circle cx="625" cy="295" r="21"/>
+    <circle cx="711" cy="533" r="12" opacity=".7"/>
+    <circle cx="508" cy="658" r="19"/>
+    <circle cx="283" cy="610" r="10" opacity=".55"/>
+  </g>
+  <g transform="translate(250 298)">
+    <rect width="300" height="230" rx="28" fill="#05090a" stroke="#5ce7ff" stroke-opacity=".6" stroke-width="3"/>
+    <path d="M44 64h212M44 112h150M44 160h184" stroke="#fff" stroke-linecap="round" stroke-width="12" opacity=".15"/>
+    <path d="M44 64h118M44 112h84M44 160h142" stroke="#5ce7ff" stroke-linecap="round" stroke-width="12" opacity=".7"/>
+  </g>
+  <text x="56" y="82" fill="#5ce7ff" font-family="Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="6">NEURAL SYSTEMS</text>
+  <text x="744" y="744" fill="#fff" font-family="Arial, sans-serif" font-size="18" text-anchor="end" opacity=".5">03 / NEANSY</text>
+</svg>

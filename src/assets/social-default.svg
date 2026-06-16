@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">NeAnSy</title>
+  <desc id="description">Technical leadership, architecture, and hands-on engineering delivery.</desc>
+  <defs>
+    <radialGradient id="glow" cx="0.18" cy="0.08" r="0.85">
+      <stop offset="0" stop-color="#5ce7ff" stop-opacity=".26"/>
+      <stop offset="1" stop-color="#5ce7ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#000"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="none" stroke="#5ce7ff" stroke-opacity=".22">
+    <path d="M65 472L220 146l202 175 145-209 242 128 151-136 180 368"/>
+    <path d="M65 472l357-151 387-81 331 232M220 146l347-34 393-8M422 321l145-209 242 128 151-136"/>
+  </g>
+  <g fill="#5ce7ff">
+    <circle cx="65" cy="472" r="7"/>
+    <circle cx="220" cy="146" r="10"/>
+    <circle cx="422" cy="321" r="12"/>
+    <circle cx="567" cy="112" r="8"/>
+    <circle cx="809" cy="240" r="11"/>
+    <circle cx="960" cy="104" r="8"/>
+    <circle cx="1140" cy="472" r="10"/>
+  </g>
+  <text x="72" y="110" fill="#5ce7ff" font-family="Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="7">NEURAL ANCILLARY SYSTEMS</text>
+  <text x="68" y="340" fill="#fff" font-family="Arial, sans-serif" font-size="110" font-weight="700" letter-spacing="-6">NeAnSy</text>
+  <text x="72" y="410" fill="#fff" fill-opacity=".72" font-family="Arial, sans-serif" font-size="31">Technical leadership, architecture,</text>
+  <text x="72" y="452" fill="#fff" fill-opacity=".72" font-family="Arial, sans-serif" font-size="31">and hands-on engineering delivery.</text>
+  <text x="1128" y="570" fill="#fff" fill-opacity=".45" font-family="Arial, sans-serif" font-size="20" text-anchor="end">neansy.com</text>
+</svg>
