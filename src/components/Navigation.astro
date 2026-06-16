@@ -43,6 +43,16 @@
 		moveHighlight(activeLink);
 	};
 
+	const updateSectionURL = (section: HTMLElement) => {
+		const url = new URL(window.location.href);
+		const nextHash = section.id === 'welcome' ? '' : `#${section.id}`;
+
+		if (url.hash === nextHash) return;
+
+		url.hash = nextHash;
+		window.history.replaceState(window.history.state, '', url);
+	};
+
 	const updateActiveSection = () => {
 		if (!main) return;
 		const scrollerBounds = main.getBoundingClientRect();
@@ -77,6 +87,7 @@
 			: undefined;
 
 		if (link && link !== activeLink) setActiveLink(link);
+		if (activeSection) updateSectionURL(activeSection);
 	};
 
 	const observer = main
