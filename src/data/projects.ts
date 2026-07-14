@@ -1,5 +1,6 @@
 import soSureImage from '../assets/projects/so-sure.svg';
 import gravitiqImage from '../assets/projects/gravitiq.svg';
+import graphiquesDigitaleImage from '../assets/projects/graphiques-digitale.svg';
 import neansyImage from '../assets/projects/neansy.svg';
 
 export type Project = {
@@ -7,10 +8,11 @@ export type Project = {
 	number: string;
 	name: string;
 	sector: string;
+	url?: string;
 	image: ImageMetadata;
 	summary: string;
 	work: string;
-	accent: 'lime' | 'violet' | 'cyan';
+	accent: 'lime' | 'violet' | 'amber' | 'cyan';
 	accentRgb: string;
 	introduction: string;
 	challenge: string[];
@@ -93,8 +95,45 @@ export const projects: Project[] = [
 		],
 	},
 	{
-		slug: 'neansy',
+		slug: 'graphiques-digitale',
 		number: '03',
+		name: 'Graphiques Digitale',
+		sector: 'Digital studio',
+		url: 'https://www.graphiquesdigitale.net',
+		image: graphiquesDigitaleImage,
+		summary:
+			'A London-based digital studio building bespoke websites, web systems, and applications for brands that need more than a brochure site.',
+		work:
+			'Full-stack delivery across discovery, specification, CMS-driven platforms, integrations, and long-term system maintenance.',
+		accent: 'amber',
+		accentRgb: '255 176 92',
+		introduction:
+			'Graphiques Digitale grew out of a long-running practice in bespoke web development and business analysis. The studio focused on small to medium-scale systems where careful discovery, clear specification, and maintainable delivery mattered as much as the interface.',
+		challenge: [
+			'Client projects often combined brand experience, content management, commerce, integrations, and operational workflows. Each system had to remain dependable while continuing to evolve after launch.',
+			'The work needed to balance aesthetic intent with practical architecture, especially when projects moved from campaign sites into longer-lived platforms and internal tools.',
+		],
+		approach: [
+			'Projects began with structured discovery and specification, grounding delivery in the requirements of the business rather than a fixed technical template.',
+			'Implementation combined CMS and framework-driven development with hands-on integration, configuration, and support, allowing each system to mature alongside the client\'s priorities.',
+		],
+		focusAreas: [
+			'Project discovery and requirements gathering',
+			'Software design specifications',
+			'CMS and framework-driven web platforms',
+			'Commerce and content-rich brand experiences',
+			'Integrations and server configuration',
+			'SEO, maintenance, and ongoing support',
+		],
+		value: [
+			'Clearer alignment between business requirements and the systems built to support them.',
+			'More complete delivery across specification, build, launch, and maintenance.',
+			'A foundation of bespoke platform work that later shaped the NeAnSy consultancy practice.',
+		],
+	},
+	{
+		slug: 'neansy',
+		number: '04',
 		name: 'NeAnSy',
 		sector: 'Technical consultancy',
 		image: neansyImage,

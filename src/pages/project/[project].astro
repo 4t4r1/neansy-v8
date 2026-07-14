@@ -38,6 +38,14 @@ const nextProject = projects[(currentIndex + 1) % projects.length];
 				<p class="project-eyebrow">{project.number} / {project.sector}</p>
 				<h1>{project.name}</h1>
 				<p class="project-deck">{project.summary}</p>
+				{
+					project.url ? (
+						<a class="project-site" href={project.url} rel="noopener noreferrer">
+							{project.url.replace(/^https?:\/\/(www\.)?/, '')}
+							<span aria-hidden="true">&nearr;</span>
+						</a>
+					) : null
+				}
 			</div>
 
 			<div class="project-hero-image">
@@ -183,6 +191,28 @@ const nextProject = projects[(currentIndex + 1) % projects.length];
 		color: rgb(255 255 255 / 0.76);
 		font-size: clamp(1.15rem, 2vw, 1.5rem);
 		line-height: 1.5;
+	}
+
+	.project-site {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		margin-top: 1.5rem;
+		color: rgb(var(--accent));
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.1em;
+		text-decoration: none;
+		text-transform: uppercase;
+	}
+
+	.project-site span {
+		transition: transform 180ms ease;
+	}
+
+	.project-site:hover span,
+	.project-site:focus-visible span {
+		transform: translate(0.15rem, -0.15rem);
 	}
 
 	.project-hero-image {
