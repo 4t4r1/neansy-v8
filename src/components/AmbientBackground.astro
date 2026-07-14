@@ -1,0 +1,29 @@
+<script>
+	import { tsParticles } from '@tsparticles/engine';
+	import { loadSlim } from '@tsparticles/slim';
+	import tsconfig from '../assets/tsparticles.json';
+
+	const initAmbientBackground = async () => {
+		await loadSlim(tsParticles);
+		await tsParticles.load({
+			id: 'ambient-background',
+			options: tsconfig,
+		});
+	};
+
+	try {
+		await initAmbientBackground();
+	} catch (error) {
+		console.warn('Ambient background initialisation failed', error);
+	}
+</script>
+
+<style>
+	#ambient-background {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+	}
+</style>
+
+<div id="ambient-background" aria-hidden="true"></div>

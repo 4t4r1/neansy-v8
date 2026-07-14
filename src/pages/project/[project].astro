@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Particles from '../../components/Particles.astro';
+import AmbientBackground from '../../components/AmbientBackground.astro';
 import { getProject, projects } from '../../data/projects';
 
 const project = getProject(Astro.params.project);
@@ -20,7 +20,7 @@ const nextProject = projects[(currentIndex + 1) % projects.length];
 	imageAlt={`${project.name} project overview by NeAnSy`}
 	type="article"
 >
-	<Particles />
+	<AmbientBackground />
 
 	<header class="project-nav">
 		<a href="/" class="brand-link" aria-label="NeAnSy home">NeAnSy</a>

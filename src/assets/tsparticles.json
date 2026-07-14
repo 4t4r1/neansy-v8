@@ -1,6 +1,4 @@
-[{
-  "key": "basic",
-  "name": "Basic",
+{
   "particles": {
     "number": {
       "value": 200,
@@ -68,4 +66,4 @@
   "background": {
     "color": "#000000"
   }
-}]
+}
